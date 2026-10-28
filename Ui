@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xbox Cloud Gaming UI</title>
+    <style>
+      :root {
+        --bg: #07111a;
+        --bg-2: #0d1826;
+        --panel: rgba(20, 32, 46, 0.9);
+        --panel-2: rgba(16, 24, 36, 0.96);
+        --line: rgba(255, 255, 255, 0.08);
+        --text: #f4f7fb;
+        --muted: #aab6c8;
+        --green: #6fe7a9;
+        --green-2: #2ed47a;
+        --blue: #46a6ff;
+        --blue-2: #7d9bff;
+        --purple: #8e73ff;
+        --yellow: #ffc857;
+        --shadow: 0 25px 60px rgba(0, 0, 0, 0.38);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: Inter, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(90, 120, 255, 0.28), transparent 28%),
+          radial-gradient(circle at bottom right, rgba(46, 212, 122, 0.18), transparent 24%),
+          var(--bg);
+        color: var(--text);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .ui-shell {
+        width: min(1200px, calc(100% - 28px));
+        margin: 40px auto;
+        padding: 18px;
+        background: rgba(10, 18, 29, 0.88);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+      }
+
+      .ui-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 12px 18px 18px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+      }
+
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--green), var(--blue));
+        color: #07131b;
+        font-weight: 900;
+      }
+
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .topnav a:hover { color: var(--text); }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 16px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.02);
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .pill.primary {
+        background: linear-gradient(135deg, var(--green), var(--green-2));
+        color: #07131b;
+        border: none;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 24px;
+        align-items: center;
+        padding: 14px 18px 18px;
+      }
+
+      .hero-copy {
+        padding: 18px 8px 8px 6px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: rgba(110, 231, 169, 0.09);
+        color: var(--green);
+        border: 1px solid rgba(110, 231, 169, 0.2);
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background: var(--green);
+        border-radius: 50%;
+        box-shadow: 0 0 16px rgba(110, 231, 169, 0.9);
+      }
+
+      h1 {
+        margin: 18px 0 14px;
+        font-size: clamp(2.7rem, 5vw, 5rem);
+        line-height: 0.96;
+        letter-spacing: -0.06em;
+      }
+
+      .lead {
+        margin: 0 0 24px;
+        max-width: 620px;
+        color: var(--muted);
+        font-size: 1.08rem;
+      }
+
+      .search-wrap {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 22px;
+        max-width: 680px;
+      }
+
+      .search-box {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 10px 14px;
+      }
+
+      .search-box input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text);
+        font-size: 1rem;
+      }
+
+      .search-box input::placeholder {
+        color: rgba(255,255,255,0.44);
+      }
+
+      .search-icon {
+        font-size: 1.2rem;
+        opacity: 0.8;
+      }
+
+      .search-btn {
+        border: none;
+        border-radius: 16px;
+        padding: 12px 18px;
+        background: linear-gradient(135deg, var(--blue), var(--purple));
+        color: white;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 13px 20px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.02);
+        font-weight: 700;
+      }
+
+      .button.primary {
+        background: linear-gradient(135deg, var(--green), var(--green-2));
+        border: none;
+        color: #07131b;
+      }
+
+      .button.secondary {
+        background: rgba(255,255,255,0.02);
+      }
+
+      .demo-panel {
+        background: linear-gradient(180deg, rgba(18,32,47,0.96), rgba(12,20,31,0.96));
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        padding: 18px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .demo-panel::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(70,166,255,0.12), transparent 32%, rgba(110,231,169,0.08));
+        pointer-events: none;
+      }
+
+      .panel-header {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+      }
+
+      .window-dots {
+        display: flex;
+        gap: 8px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .dot.red { background: #ff6b6b; }
+      .dot.yellow { background: #ffc857; }
+      .dot.green { background: #54d5a1; }
+
+      .header-badge {
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(110,231,169,0.08);
+        border: 1px solid rgba(110,231,169,0.18);
+        color: var(--green);
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+
+      .game-card {
+        position: relative;
+        border-radius: 22px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background:
+          linear-gradient(180deg, rgba(8, 14, 20, 0.12), rgba(8, 14, 20, 0.7)),
+          linear-gradient(135deg, #3d5dff 0%, #7c65ff 38%, #1cb8d4 100%);
+        min-height: 360px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+      }
+
+      .game-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at top left, rgba(255,255,255,0.22), transparent 20%),
+          linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.3));
+      }
+
+      .game-meta {
+        position: relative;
+        z-index: 1;
+      }
+
+      .game-tag {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.18);
+        font-size: 0.72rem;
+        margin-bottom: 14px;
+      }
+
+      .game-meta h3 {
+        margin: 0 0 10px;
+        font-size: clamp(1.8rem, 2.4vw, 2.8rem);
+        letter-spacing: -0.06em;
+      }
+
+      .meta-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        color: rgba(255,255,255,0.9);
+        font-size: 0.92rem;
+      }
+
+      .live {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #fff;
+      }
+
+      .live::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ff4d5a;
+        box-shadow: 0 0 10px rgba(255,77,90,0.9);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .stats .tile {
+        padding: 14px 12px;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--line);
+      }
+
+      .stats strong {
+        display: block;
+        font-size: 1.3rem;
+      }
+
+      .stats span {
+        font-size: 0.76rem;
+        color: var(--muted);
+      }
+
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .topnav {
+          display: none;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .ui-shell {
+          padding: 12px;
+        }
+
+        .ui-topbar {
+          flex-wrap: wrap;
+          justify-content: center;
+          padding-bottom: 10px;
+        }
+
+        .top-actions {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .search-wrap {
+          flex-direction: column;
+        }
+
+        .search-btn {
+          width: 100%;
+        }
+
+        .cta-row {
+          flex-direction: column;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        .stats {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ui-shell">
+      <header class="ui-topbar">
+        <div class="brand">
+          <div class="brand-mark">X</div>
+          <div>Cloud Gaming</div>
+        </div>
+
+        <nav class="topnav" aria-label="Main navigation">
+          <a href="#">Games</a>
+          <a href="#">Plans</a>
+          <a href="#">Accessories</a>
+          <a href="#">Support</a>
+        </nav>
+
+        <div class="top-actions">
+          <span class="pill">Sign in</span>
+          <span class="pill primary">Get started</span>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">Game anywhere</div>
+          <h1>Play the biggest Xbox games in the cloud.</h1>
+          <p class="lead">
+            Stream your favorite titles on any screen, with instant access to
+            blockbuster games, multiplayer action, and Xbox Game Pass.
+          </p>
+
+          <div class="search-wrap">
+            <label class="search-box" aria-label="Search games">
+              <span class="search-icon">⌕</span>
+              <input type="text" placeholder="Search games, genres, or studios" />
+            </label>
+            <button class="search-btn">Search</button>
+          </div>
+
+          <div class="cta-row">
+            <a href="#" class="button primary">Start streaming</a>
+            <a href="#" class="button secondary">View plans</a>
+          </div>
+        </div>
+
+        <div class="demo-panel">
+          <div class="panel-header">
+            <div class="window-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <span class="header-badge">LIVE</span>
+          </div>
+
+          <div class="game-card">
+            <div class="game-meta">
+              <div class="game-tag">Xbox Game Pass</div>
+              <h3>Forza Horizon 5</h3>
+
+              <div class="meta-row">
+                <span>Ultra-fast streaming</span>
+                <span class="live">Now live</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="tile">
+              <strong>120+</strong>
+              <span>games</span>
+            </div>
+            <div class="tile">
+              <strong>4K</strong>
+              <span>streaming</span>
+            </div>
+            <div class="tile">
+              <strong>High FPS</strong>
+              <span>performance</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
