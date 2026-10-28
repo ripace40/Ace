@@ -3,53 +3,1131 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ace</title>
+    <title>Northstar — Build smarter</title>
+    <meta
+      name="description"
+      content="A modern homepage with a Google search engine built in."
+    />
     <style>
+      :root {
+        --bg: #07111f;
+        --bg-soft: #0d1a2d;
+        --panel: rgba(18, 31, 48, 0.8);
+        --panel-strong: #101c2d;
+        --card: #11233b;
+        --card-2: #162d47;
+        --line: rgba(255, 255, 255, 0.09);
+        --text: #edf4ff;
+        --muted: #a8bad6;
+        --primary: #7c9cff;
+        --primary-2: #78f2d8;
+        --accent: #ffb866;
+        --shadow: 0 24px 60px rgba(7, 17, 31, 0.45);
+        --radius: 22px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #0f172a, #1e293b);
-        color: white;
-        display: grid;
-        place-items: center;
-        min-height: 100vh;
-      }
-
-      .card {
-        text-align: center;
-        padding: 40px 60px;
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.08);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      }
-
-      h1 {
-        font-size: 4rem;
-        margin-bottom: 20px;
+        font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(124, 156, 255, 0.24), transparent 30%),
+          radial-gradient(circle at top right, rgba(120, 242, 216, 0.18), transparent 35%),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.6;
       }
 
       a {
-        display: inline-block;
-        margin-top: 12px;
-        padding: 12px 20px;
-        background: #f59e0b;
-        color: #111827;
+        color: inherit;
         text-decoration: none;
-        border-radius: 10px;
-        font-weight: bold;
       }
 
-      a:hover {
-        background: #fbbf24;
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(14px);
+        background: rgba(7, 17, 31, 0.5);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 76px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+      }
+
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        display: grid;
+        place-items: center;
+        box-shadow: 0 14px 32px rgba(124, 156, 255, 0.4);
+      }
+
+      .brand-mark::before {
+        content: "N";
+        font-weight: 900;
+        color: #07111f;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0.88rem 1.35rem;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-weight: 700;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        cursor: pointer;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+      }
+
+      .button.primary {
+        background: linear-gradient(135deg, var(--primary), #a598ff);
+        color: #081520;
+        box-shadow: 0 16px 30px rgba(124, 156, 255, 0.35);
+      }
+
+      .button.secondary {
+        background: rgba(255, 255, 255, 0.02);
+        border-color: var(--line);
+        color: var(--text);
+      }
+
+      .nav-toggle {
+        display: none;
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .nav-toggle span,
+      .nav-toggle::before,
+      .nav-toggle::after {
+        content: "";
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        height: 2px;
+        background: var(--text);
+        border-radius: 10px;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+      }
+
+      .nav-toggle span {
+        top: 21px;
+      }
+
+      .nav-toggle::before {
+        top: 14px;
+      }
+
+      .nav-toggle::after {
+        bottom: 14px;
+      }
+
+      .nav-toggle.active span {
+        opacity: 0;
+      }
+
+      .nav-toggle.active::before {
+        transform: translateY(7px) rotate(45deg);
+      }
+
+      .nav-toggle.active::after {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+
+      .hero {
+        padding: 80px 0 56px;
+      }
+
+      .hero-inner {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 42px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.35rem 0.8rem;
+        font-size: 0.8rem;
+        border: 1px solid rgba(120, 242, 216, 0.3);
+        background: rgba(120, 242, 216, 0.08);
+        color: var(--primary-2);
+        border-radius: 999px;
+        margin-bottom: 20px;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--primary-2);
+        box-shadow: 0 0 16px rgba(120, 242, 216, 0.9);
+      }
+
+      h1 {
+        font-size: clamp(2.7rem, 6vw, 5rem);
+        line-height: 0.98;
+        letter-spacing: -0.06em;
+        margin: 0 0 22px;
+      }
+
+      .hero-copy .lead {
+        max-width: 620px;
+        font-size: 1.1rem;
+        color: var(--muted);
+        margin-bottom: 30px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+
+      .search-box {
+        max-width: 620px;
+        margin: 0 0 22px;
+      }
+
+      .search-form {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px 12px 18px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+      }
+
+      .search-form input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text);
+        font-size: 1rem;
+        padding: 10px 0;
+      }
+
+      .search-form input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .google-button {
+        background: linear-gradient(135deg, #4d7cff, #77d4ff);
+        color: #081520;
+        border: none;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 14px 28px rgba(77, 124, 255, 0.3);
+      }
+
+      .mini-proof {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+        color: var(--muted);
+      }
+
+      .avatars {
+        display: flex;
+        align-items: center;
+      }
+
+      .avatar {
+        width: 34px;
+        height: 34px;
+        margin-left: -8px;
+        border: 2px solid var(--bg);
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f7d6a4, #e2a7ff);
+      }
+
+      .avatar:first-child {
+        margin-left: 0;
+      }
+
+      .avatar:nth-child(2) {
+        background: linear-gradient(135deg, #9be7c5, #79b8ff);
+      }
+
+      .avatar:nth-child(3) {
+        background: linear-gradient(135deg, #f4a9c1, #f5d480);
+      }
+
+      .hero-card {
+        position: relative;
+        padding: 20px;
+        background: rgba(12, 23, 36, 0.74);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(124, 156, 255, 0.14), transparent 30%, rgba(120, 242, 216, 0.14));
+        border-radius: inherit;
+        pointer-events: none;
+      }
+
+      .chart-panel {
+        position: relative;
+        padding: 18px 18px 8px;
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+        border: 1px solid var(--line);
+      }
+
+      .chart-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.4rem 0.7rem;
+        border-radius: 999px;
+        font-size: 0.74rem;
+        color: var(--primary-2);
+        background: rgba(120, 242, 216, 0.08);
+        border: 1px solid rgba(120, 242, 216, 0.2);
+      }
+
+      .chart-bars {
+        display: flex;
+        align-items: end;
+        gap: 10px;
+        height: 180px;
+        padding: 10px 5px 0;
+      }
+
+      .chart-bars span {
+        flex: 1;
+        border-radius: 10px 10px 0 0;
+        background: linear-gradient(180deg, var(--primary), rgba(124,156,255,0.38));
+        box-shadow: inset 0 0 18px rgba(255,255,255,0.08);
+      }
+
+      .chart-bars span:nth-child(1) { height: 32%; }
+      .chart-bars span:nth-child(2) { height: 48%; }
+      .chart-bars span:nth-child(3) { height: 62%; }
+      .chart-bars span:nth-child(4) { height: 75%; }
+      .chart-bars span:nth-child(5) { height: 88%; }
+      .chart-bars span:nth-child(6) { height: 100%; background: linear-gradient(180deg, var(--primary-2), rgba(120,242,216,0.4)); }
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .stat-box {
+        padding: 14px 12px;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--line);
+      }
+
+      .stat-box strong {
+        display: block;
+        font-size: 1.3rem;
+        margin-bottom: 4px;
+      }
+
+      .stat-box span {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .logo-strip {
+        padding: 18px 0 10px;
+      }
+
+      .logo-inner {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 16px;
+        align-items: center;
+        color: rgba(255,255,255,0.56);
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-align: center;
+        padding: 12px 0;
+      }
+
+      .features, .showcase, .pricing, .cta-bar {
+        padding: 72px 0;
+      }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 18px;
+        margin-bottom: 28px;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3rem);
+        letter-spacing: -0.06em;
+      }
+
+      .section-head p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 540px;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .feature-card {
+        background: rgba(17, 35, 59, 0.74);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 24px;
+      }
+
+      .feature-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(124,156,255,0.22), rgba(120,242,216,0.18));
+        display: grid;
+        place-items: center;
+        margin-bottom: 18px;
+        font-size: 1.4rem;
+      }
+
+      .feature-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.3rem;
+      }
+
+      .feature-card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .showcase-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        gap: 24px;
+        align-items: center;
+      }
+
+      .showcase-panel {
+        background: rgba(17, 35, 59, 0.78);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        overflow: hidden;
+      }
+
+      .showcase-visual {
+        padding: 28px;
+      }
+
+      .mock-window {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        overflow: hidden;
+        background: #0b1727;
+      }
+
+      .mock-topbar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255,255,255,0.02);
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .dot.red { background: #ff6b6b; }
+      .dot.yellow { background: #ffc857; }
+      .dot.green { background: #55d6a7; }
+
+      .mock-body {
+        padding: 20px;
+      }
+
+      .metrics-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .mini-box {
+        padding: 14px 12px;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+
+      .mini-box strong {
+        display: block;
+        font-size: 1.08rem;
+      }
+
+      .mini-box span {
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+
+      .bar-stack {
+        display: flex;
+        align-items: end;
+        gap: 10px;
+        height: 110px;
+        margin-top: 14px;
+      }
+
+      .bar-stack span {
+        flex: 1;
+        border-radius: 12px 12px 0 0;
+        background: linear-gradient(180deg, #7c9cff, rgba(124,156,255,0.4));
+      }
+
+      .bar-stack span:nth-child(2) {
+        background: linear-gradient(180deg, #78f2d8, rgba(120,242,216,0.4));
+      }
+
+      .bar-stack span:nth-child(3) {
+        background: linear-gradient(180deg, #ffc857, rgba(255,184,102,0.46));
+      }
+
+      .showcase-copy {
+        padding: 8px 10px;
+      }
+
+      .showcase-copy h3 {
+        margin: 0 0 12px;
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        letter-spacing: -0.06em;
+      }
+
+      .showcase-copy p {
+        margin: 0 0 22px;
+        color: var(--muted);
+      }
+
+      .bullet-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 14px;
+      }
+
+      .bullet-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        color: var(--text);
+      }
+
+      .bullet-list li::before {
+        content: "✓";
+        width: 22px;
+        height: 22px;
+        display: inline-grid;
+        place-items: center;
+        border-radius: 50%;
+        background: rgba(120, 242, 216, 0.12);
+        color: var(--primary-2);
+        font-weight: 800;
+        margin-top: 2px;
+      }
+
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .price-card {
+        background: rgba(17, 35, 59, 0.76);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 26px 22px;
+      }
+
+      .price-card.featured {
+        background: linear-gradient(180deg, rgba(124,156,255,0.12), rgba(17,35,59,0.8));
+        border-color: rgba(124,156,255,0.45);
+        transform: translateY(-8px);
+      }
+
+      .price-card h3 {
+        margin: 0 0 12px;
+        font-size: 1.3rem;
+      }
+
+      .price {
+        display: flex;
+        align-items: end;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .price strong {
+        font-size: 2.6rem;
+        letter-spacing: -0.06em;
+      }
+
+      .price span {
+        color: var(--muted);
+      }
+
+      .price-card p {
+        color: var(--muted);
+        margin: 0 0 20px;
+      }
+
+      .price-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 22px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .price-card li {
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .price-card li::before {
+        content: "•";
+        color: var(--primary-2);
+        font-size: 1.5rem;
+        line-height: 1;
+      }
+
+      .cta-bar {
+        padding-top: 0;
+      }
+
+      .cta-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+        padding: 34px 30px;
+        background: linear-gradient(135deg, rgba(124,156,255,0.14), rgba(120,242,216,0.08));
+        border: 1px solid rgba(124,156,255,0.18);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .cta-box h3 {
+        margin: 0 0 8px;
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        letter-spacing: -0.06em;
+      }
+
+      .cta-box p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .site-footer {
+        padding: 10px 0 42px;
+        color: var(--muted);
+      }
+
+      .footer-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        border-top: 1px solid var(--line);
+        padding-top: 24px;
+      }
+
+      .footer-links {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      @media (max-width: 900px) {
+        .hero-inner,
+        .showcase-wrap,
+        .feature-grid,
+        .pricing-grid,
+        .section-head,
+        .cta-box,
+        .footer-inner {
+          grid-template-columns: 1fr;
+          display: grid;
+          justify-content: stretch;
+        }
+
+        .feature-grid,
+        .pricing-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-inner {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links {
+          position: absolute;
+          left: 16px;
+          right: 16px;
+          top: 76px;
+          padding: 18px;
+          background: rgba(7, 17, 31, 0.96);
+          border: 1px solid var(--line);
+          border-radius: 16px;
+          display: none;
+          flex-direction: column;
+          align-items: flex-start;
+          box-shadow: var(--shadow);
+        }
+
+        .nav-links.open {
+          display: flex;
+        }
+
+        .nav-toggle {
+          display: inline-block;
+        }
+
+        .nav-actions .button.secondary {
+          display: none;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .logo-inner {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          letter-spacing: 0.1em;
+        }
+
+        .hero {
+          padding-top: 56px;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        .hero-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .search-form {
+          flex-direction: column;
+          border-radius: 22px;
+          padding: 14px;
+        }
+
+        .search-form input,
+        .google-button {
+          width: 100%;
+        }
+
+        .stat-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .metrics-row {
+          grid-template-columns: 1fr;
+        }
+
+        .cta-box {
+          padding: 26px 20px;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="card">
-      <h1>Ace</h1>
-      <a href="https://croxyproxy.com" target="_blank" rel="noopener noreferrer">
-        Visit CroxyProxy
-      </a>
-    </div>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="#" class="brand" aria-label="Northstar home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Northstar</span>
+        </a>
+
+        <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+          <a href="#features">Features</a>
+          <a href="#solutions">Solutions</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#resources">Resources</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a href="#" class="button secondary">Log in</a>
+          <a href="#" class="button primary">Get started</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <div class="eyebrow">Built for modern teams</div>
+            <h1>Turn ideas into momentum.</h1>
+            <p class="lead">
+              Northstar helps growing teams align, ship faster, and make decisions with real-time clarity across projects, product, and performance.
+            </p>
+
+            <!-- Google Search -->
+            <div class="search-box">
+              <form class="search-form" action="https://www.google.com/search" method="get" target="_blank" role="search">
+                <input
+                  type="text"
+                  name="q"
+                  placeholder="Search the web with Google..."
+                  aria-label="Search the web with Google"
+                />
+                <button type="submit" class="google-button">Search</button>
+              </form>
+            </div>
+
+            <div class="hero-actions">
+              <a href="#" class="button primary">Start free trial</a>
+              <a href="#" class="button secondary">Book a demo</a>
+            </div>
+
+            <div class="mini-proof">
+              <div class="avatars" aria-label="Customer avatars">
+                <span class="avatar"></span>
+                <span class="avatar"></span>
+                <span class="avatar"></span>
+              </div>
+              <span>Trusted by 5,000+ product teams</span>
+            </div>
+          </div>
+
+          <div class="hero-card" aria-label="Product dashboard preview">
+            <div class="chart-panel">
+              <div class="chart-top">
+                <strong>Performance overview</strong>
+                <span class="chip">+24.8%</span>
+              </div>
+
+              <div class="chart-bars" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+
+              <div class="stat-grid">
+                <div class="stat-box">
+                  <strong>1.4M</strong>
+                  <span>Tasks shipped</span>
+                </div>
+                <div class="stat-box">
+                  <strong>94%</strong>
+                  <span>On-time delivery</span>
+                </div>
+                <div class="stat-box">
+                  <strong>3.2x</strong>
+                  <span>Faster planning</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="logo-strip">
+        <div class="container">
+          <div class="logo-inner" aria-label="Customer logos">
+            <span>Nova</span>
+            <span>Pulse</span>
+            <span>Helio</span>
+            <span>Summit</span>
+            <span>Vertex</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="features" id="features">
+        <div class="container">
+          <div class="section-head">
+            <h2>Everything your team needs to move with confidence.</h2>
+            <p>Bring strategy, work, and reporting into one place without stitching together a dozen tools.</p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-card">
+              <div class="feature-icon">⚡</div>
+              <h3>Faster execution</h3>
+              <p>Turn priorities into action with aligned roadmaps, automations, and clear ownership across every project.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">📈</div>
+              <h3>Clear visibility</h3>
+              <p>Track progress in real time with dashboards built for leaders, managers, and individual contributors.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">🤝</div>
+              <h3>Smarter collaboration</h3>
+              <p>Keep stakeholders in sync with shared updates, comments, and workflows designed for momentum.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="showcase" id="solutions">
+        <div class="container showcase-wrap">
+          <div class="showcase-panel">
+            <div class="showcase-visual">
+              <div class="mock-window">
+                <div class="mock-topbar">
+                  <span class="dot red"></span>
+                  <span class="dot yellow"></span>
+                  <span class="dot green"></span>
+                </div>
+                <div class="mock-body">
+                  <div class="metrics-row">
+                    <div class="mini-box">
+                      <strong>42%</strong>
+                      <span>Faster cycle</span>
+                    </div>
+                    <div class="mini-box">
+                      <strong>89%</strong>
+                      <span>Engagement</span>
+                    </div>
+                    <div class="mini-box">
+                      <strong>18k</strong>
+                      <span>Tasks</span>
+                    </div>
+                  </div>
+
+                  <div class="bar-stack" aria-hidden="true">
+                    <span style="height: 38%"></span>
+                    <span style="height: 58%"></span>
+                    <span style="height: 82%"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="showcase-copy">
+            <h3>Replace fragmented workflows with one source of truth.</h3>
+            <p>
+              From roadmap planning to sprint execution, Northstar unifies the work behind your product strategy so everyone knows what matters next.
+            </p>
+
+            <ul class="bullet-list">
+              <li>Launch and manage initiatives from a shared workspace.</li>
+              <li>Measure outcomes with flexible dashboards and team reports.</li>
+              <li>Reduce handoff friction across product, engineering, and operations.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing" id="pricing">
+        <div class="container">
+          <div class="section-head">
+            <h2>Simple pricing. Real impact.</h2>
+            <p>Choose a plan that fits your team at every stage of growth.</p>
+          </div>
+
+          <div class="pricing-grid">
+            <article class="price-card">
+              <h3>Starter</h3>
+              <div class="price">
+                <strong>$29</strong>
+                <span>/seat</span>
+              </div>
+              <p>For small teams building their operating rhythm.</p>
+
+              <ul>
+                <li>Unlimited projects</li>
+                <li>Shared dashboards</li>
+                <li>Email support</li>
+              </ul>
+
+              <a href="#" class="button secondary">Get started</a>
+            </article>
+
+            <article class="price-card featured">
+              <h3>Growth</h3>
+              <div class="price">
+                <strong>$79</strong>
+                <span>/seat</span>
+              </div>
+              <p>For scaling teams that need more visibility and automation.</p>
+
+              <ul>
+                <li>Advanced analytics</li>
+                <li>Custom workflows</li>
+                <li>Priority support</li>
+              </ul>
+
+              <a href="#" class="button primary">Most popular</a>
+            </article>
+
+            <article class="price-card">
+              <h3>Enterprise</h3>
+              <div class="price">
+                <strong>Custom</strong>
+                <span></span>
+              </div>
+              <p>Built for complex organizations with dedicated support.</p>
+
+              <ul>
+                <li>SSO & permissions</li>
+                <li>Data migration</li>
+                <li>Strategic onboarding</li>
+              </ul>
+
+              <a href="#" class="button secondary">Talk to sales</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-bar">
+        <div class="container">
+          <div class="cta-box">
+            <div>
+              <h3>Ready to build momentum?</h3>
+              <p>Start today with a 14-day free trial—no credit card required.</p>
+            </div>
+
+            <a href="#" class="button primary">Start free trial</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="resources">
+      <div class="container footer-inner">
+        <div class="brand" aria-label="Northstar">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Northstar</span>
+        </div>
+
+        <div class="footer-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Support</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const toggle = document.getElementById("navToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      toggle.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("open");
+        toggle.classList.toggle("active", isOpen);
+        toggle.setAttribute("aria-expanded", String(isOpen));
+      });
+    </script>
   </body>
-</html>  
+</html>
