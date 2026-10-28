@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ace</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: white;
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+      }
+
+      .card {
+        text-align: center;
+        padding: 40px 60px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      h1 {
+        font-size: 4rem;
+        margin-bottom: 20px;
+      }
+
+      a {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 12px 20px;
+        background: #f59e0b;
+        color: #111827;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: bold;
+      }
+
+      a:hover {
+        background: #fbbf24;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Ace</h1>
+      <a href="https://croxyproxy.com" target="_blank" rel="noopener noreferrer">
+        Visit CroxyProxy
+      </a>
+    </div>
+  </body>
+</html>  
